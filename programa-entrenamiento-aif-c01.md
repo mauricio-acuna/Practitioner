@@ -13,6 +13,7 @@ Nota: las preguntas de practica son originales, no son preguntas oficiales de AW
 ## Material complementario creado
 
 - `ejercicios-explicados-por-dominio-aif-c01.md`: 50 ejercicios por dominio con respuesta, explicacion y descarte de distractores.
+- `matriz-decision-aif-c01.md`: guia rapida para elegir tecnica, servicio y control segun pistas del enunciado.
 - `simulador-2-aif-c01.md`: segundo simulador completo de 65 preguntas con respuestas explicadas.
 - `tarjetas-memoria-aif-c01.md`: tarjetas pregunta/respuesta por dominio para repaso espaciado.
 

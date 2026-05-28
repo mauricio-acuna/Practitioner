@@ -7,11 +7,12 @@ Material de estudio en castellano para preparar la certificacion **AWS Certified
 1. [Guia principal del examen](ai-practitioner-01.md)
 2. [Programa de entrenamiento](programa-entrenamiento-aif-c01.md)
 3. [Ejercicios explicados por dominio](ejercicios-explicados-por-dominio-aif-c01.md)
-4. [Simulador 2](simulador-2-aif-c01.md)
-5. [Tarjetas de memoria](tarjetas-memoria-aif-c01.md)
-6. [Checklist operativa para reservar y rendir](checklist-operativa-aif-c01.md)
-7. [Consejos practicos para rendir el examen](consejos-practicos-examen-aif-c01.md)
-8. [Control de calidad](control-calidad-aif-c01.md)
+4. [Matriz de decision](matriz-decision-aif-c01.md)
+5. [Simulador 2](simulador-2-aif-c01.md)
+6. [Tarjetas de memoria](tarjetas-memoria-aif-c01.md)
+7. [Checklist operativa para reservar y rendir](checklist-operativa-aif-c01.md)
+8. [Consejos practicos para rendir el examen](consejos-practicos-examen-aif-c01.md)
+9. [Control de calidad](control-calidad-aif-c01.md)
 
 ## Dominios
 

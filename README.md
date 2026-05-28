@@ -9,8 +9,9 @@ Material de estudio en castellano para preparar la certificacion **AWS Certified
 3. [Ejercicios explicados por dominio](ejercicios-explicados-por-dominio-aif-c01.md)
 4. [Simulador 2](simulador-2-aif-c01.md)
 5. [Tarjetas de memoria](tarjetas-memoria-aif-c01.md)
-6. [Consejos practicos para rendir el examen](consejos-practicos-examen-aif-c01.md)
-7. [Control de calidad](control-calidad-aif-c01.md)
+6. [Checklist operativa para reservar y rendir](checklist-operativa-aif-c01.md)
+7. [Consejos practicos para rendir el examen](consejos-practicos-examen-aif-c01.md)
+8. [Control de calidad](control-calidad-aif-c01.md)
 
 ## Dominios
 

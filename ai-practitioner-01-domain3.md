@@ -69,6 +69,7 @@ Servicios dentro del alcance que pueden aparecer para almacenar o buscar embeddi
 | Necesidad | Tecnica preferida |
 |---|---|
 | Mejorar instrucciones/formato | Prompt engineering |
+| Resolver con ejemplos dentro del prompt | In-context learning / few-shot prompting |
 | Usar datos privados/actualizados | RAG |
 | Adaptar estilo o tarea con ejemplos | Fine-tuning |
 | Ampliar conocimiento de base | Continuous pre-training |
@@ -227,3 +228,189 @@ No basta evaluar el texto final. Tambien debes medir:
 3. Estilo especifico con muchos ejemplos: fine-tuning.
 4. Respuestas creativas: temperature mas alta, con controles.
 5. Respuestas reguladas: temperature baja, RAG, guardrails y validacion.
+
+## Senales para elegir respuesta en examen
+
+- Si la informacion cambia con frecuencia, requiere fuentes o viene de documentos privados: piensa en RAG.
+- Si el problema es formato, tono, estructura o cumplimiento de instrucciones: piensa en prompt engineering.
+- Si el modelo necesita aprender un estilo, patron de respuesta o dominio con ejemplos persistentes: piensa en fine-tuning.
+- Si la empresa quiere adaptar conocimiento amplio del modelo con muchos datos de dominio: piensa en continuous pre-training.
+- Si la prioridad es bajar costo o latencia manteniendo comportamiento similar: piensa en distillation.
+- Si el caso implica varios pasos, herramientas, memoria o ejecucion de acciones: piensa en agentes.
+- Si el caso es de alto riesgo, regulado o sensible: combina controles, guardrails, evaluacion humana, logs y permisos minimos.
+
+## Tabla de decision rapida
+
+| Pista del enunciado | Respuesta probable | Motivo |
+|---|---|---|
+| "Necesitamos respuestas con citas sobre politicas internas" | RAG / Bedrock Knowledge Bases | Grounding con datos propios |
+| "La respuesta debe estar siempre en JSON" | Prompt template y validacion | Control de formato |
+| "El modelo ignora instrucciones ocasionalmente" | Mejor prompt, ejemplos, guardrails y pruebas | El problema es comportamiento de inferencia |
+| "Los documentos cambian cada semana" | RAG | Evita reentrenar por cada cambio |
+| "Se desea un modelo mas pequeno y barato" | Distillation | Reduce costo/latencia |
+| "Debe usar APIs corporativas para completar tareas" | Agente con permisos minimos | Necesita herramientas y accion |
+| "Necesitamos comparar dos modelos para resumen" | ROUGE, evaluacion humana, Bedrock Model Evaluation | Metricas y revision adecuadas |
+| "La calidad depende de que recupere documentos correctos" | Evaluacion RAG | Hay que medir recuperacion y respuesta |
+
+## Coste y complejidad de personalizacion
+
+De menor a mayor esfuerzo aproximado:
+
+1. Prompt engineering: rapido, barato, ideal para formato e instrucciones.
+2. In-context learning: incluye ejemplos en el prompt, util sin cambiar el modelo.
+3. RAG: agrega datos externos y actualizados; requiere recuperacion, embeddings y base vectorial.
+4. Fine-tuning: ajusta el modelo con ejemplos; mas costoso que prompts/RAG.
+5. Continuous pre-training: adapta conocimiento amplio del modelo con grandes datos de dominio.
+6. Pre-training: entrenamiento desde cero; normalmente el mas caro y complejo.
+
+## Evaluacion por tipo de aplicacion
+
+| Aplicacion | Que medir |
+|---|---|
+| Chatbot de soporte | Exactitud, satisfaccion, tasa de resolucion, escalamiento humano |
+| Resumen de documentos | ROUGE, evaluacion humana, cobertura, fidelidad |
+| Traduccion | BLEU, fluidez, terminologia, revision humana |
+| Busqueda/RAG | Relevancia de documentos, groundedness, citas, precision de respuesta |
+| Agente | Tarea completada, herramientas correctas, errores, permisos, latencia y costo |
+| Workflow GenAI | Pasos completados, fallos, reintentos, aprobaciones humanas, valor de negocio |
+
+## Mini casos resueltos
+
+### Caso 1
+
+Una empresa quiere que un asistente responda preguntas sobre contratos internos y muestre la fuente exacta usada.
+
+Respuesta: RAG con Amazon Bedrock Knowledge Bases, una base vectorial compatible y citacion de fuentes. Fine-tuning no es la mejor primera opcion porque el objetivo principal es usar datos privados recuperables y verificables.
+
+### Caso 2
+
+Un equipo ya tiene buenas respuestas, pero quiere que salgan siempre con la misma estructura y campos.
+
+Respuesta: prompt template, ejemplos few-shot y validacion del formato. Si el formato es critico, no dependas solo del prompt; valida la salida en la aplicacion.
+
+### Caso 3
+
+Un asistente debe revisar tickets, consultar un sistema externo y crear una tarea si falta informacion.
+
+Respuesta: agente con herramientas autorizadas, permisos minimos, logs y aprobacion humana si la accion tiene impacto. La clave no es solo generar texto, sino ejecutar pasos.
+
+### Caso 4
+
+Un modelo grande funciona bien, pero es caro para miles de interacciones diarias simples.
+
+Respuesta: evaluar un modelo mas pequeno o usar distillation. Tambien conviene revisar longitud de entrada/salida, cache de prompt y eleccion de modelo.
+
+### Caso 5
+
+Un modelo responde con informacion plausible pero no verificable en un caso regulado.
+
+Respuesta: bajar variabilidad, usar RAG con fuentes autorizadas, aplicar guardrails, validar salida y agregar revision humana cuando el riesgo lo justifique.
+
+## Preguntas tipo examen
+
+1. Una organizacion necesita respuestas sobre documentacion interna que cambia con frecuencia. Que enfoque minimiza mantenimiento y mejora grounding?
+   - Respuesta: RAG.
+
+2. Que metrica se asocia mas con evaluacion de resumen?
+   - Respuesta: ROUGE.
+
+3. Que tecnica permite adaptar un modelo a una tarea con ejemplos en el prompt, sin modificar pesos?
+   - Respuesta: in-context learning / few-shot prompting.
+
+4. Que control es clave cuando un agente puede llamar herramientas externas?
+   - Respuesta: permisos minimos, validacion de herramientas, logs y aprobacion humana para acciones sensibles.
+
+5. Que tecnica suele ser mas adecuada si quieres reducir coste y latencia de un modelo grande manteniendo comportamiento parecido?
+   - Respuesta: distillation.
+
+6. Que debes evaluar en una aplicacion RAG ademas de la respuesta final?
+   - Respuesta: calidad de recuperacion, relevancia, citas, cobertura y groundedness.
+
+## Diferencias que suelen confundirse
+
+| Conceptos | Diferencia clave |
+|---|---|
+| RAG vs fine-tuning | RAG recupera informacion externa; fine-tuning ajusta comportamiento del modelo |
+| Prompt engineering vs in-context learning | Prompt engineering disena instrucciones; in-context learning aprende del ejemplo dentro del prompt |
+| Fine-tuning vs continuous pre-training | Fine-tuning adapta tarea/estilo; continuous pre-training amplia conocimiento con datos de dominio |
+| Modelo vs aplicacion | El modelo genera; la aplicacion agrega contexto, herramientas, validacion, UI, logs y controles |
+| Evaluacion de modelo vs evaluacion de negocio | La primera mide calidad tecnica; la segunda mide valor real, productividad, satisfaccion y coste |
+| Guardrails vs prompt | Guardrails son controles de seguridad; el prompt no debe ser el unico mecanismo de control |
+| Agente vs chatbot simple | El agente planifica, usa herramientas y puede ejecutar acciones |
+
+## Mapa mental por objetivo oficial
+
+### Objetivo 3.1
+
+Debes saber disenar aplicaciones con FMs:
+
+- Elegir modelo por costo, modalidad, latencia, idioma, tamano, complejidad, region y compliance.
+- Ajustar parametros de inferencia segun creatividad, consistencia, costo y latencia.
+- Usar RAG cuando hacen falta datos externos, privados, actuales o verificables.
+- Reconocer bases vectoriales compatibles para embeddings.
+- Comparar personalizacion por costo y complejidad.
+- Identificar cuando conviene usar agentes.
+
+### Objetivo 3.2
+
+Debes elegir tecnicas de prompt:
+
+- Zero-shot para tareas simples sin ejemplos.
+- One-shot o few-shot cuando quieres mostrar patron de respuesta.
+- Prompt templates para reutilizacion y consistencia.
+- Negative prompts para indicar que evitar.
+- Guardrails y validacion para reducir riesgo.
+- Versionado de prompts para comparar, auditar y revertir.
+
+### Objetivo 3.3
+
+Debes entender entrenamiento y ajuste:
+
+- Pre-training crea o aprende capacidades generales.
+- Continuous pre-training adapta conocimiento amplio con mas datos.
+- Fine-tuning ajusta el modelo para una tarea, estilo o dominio especifico.
+- Instruction tuning mejora seguimiento de instrucciones.
+- RLHF usa feedback humano para alinear respuestas.
+- Distillation transfiere comportamiento a un modelo mas pequeno.
+
+### Objetivo 3.4
+
+Debes evaluar rendimiento:
+
+- Usa benchmarks y datasets de prueba cuando sean relevantes.
+- Usa evaluacion humana para calidad, utilidad, tono y riesgos.
+- Usa metricas como ROUGE, BLEU, BERTScore o LLM-as-a-judge segun tarea.
+- Evalua la aplicacion completa, no solo el modelo.
+- Conecta metricas tecnicas con productividad, satisfaccion, engagement y costo por interaccion.
+
+## Mas preguntas de practica
+
+1. Un asistente debe responder en varios idiomas y con baja latencia. Que criterios debes revisar al elegir el FM?
+   - Respuesta: soporte multilingue, latencia, region, costo, tamano del modelo y longitud de entrada/salida.
+
+2. Una empresa quiere probar rapidamente si un modelo puede clasificar correos sin entrenarlo. Que tecnica usa primero?
+   - Respuesta: zero-shot o few-shot prompting.
+
+3. Una aplicacion repite el mismo contexto largo en muchas llamadas. Que factor puede ayudar a reducir costo o latencia?
+   - Respuesta: prompt caching, ademas de optimizar longitud de contexto.
+
+4. Que tecnica mejora la respuesta con documentos recuperados desde una base vectorial?
+   - Respuesta: RAG.
+
+5. Que riesgo ocurre cuando contenido malicioso dentro de un documento recuperado intenta cambiar instrucciones del sistema?
+   - Respuesta: prompt injection o poisoning del contexto.
+
+6. Que enfoque usar si la prioridad es que el modelo siga mejor instrucciones en un formato concreto despues de entrenarlo con ejemplos?
+   - Respuesta: instruction tuning o fine-tuning, segun el caso.
+
+7. Que opcion es mejor para tareas reguladas: temperature alta o baja?
+   - Respuesta: temperature baja, con grounding, guardrails y validacion.
+
+8. Que debes revisar si una opcion del examen propone que "el prompt garantiza seguridad"?
+   - Respuesta: es sospechosa; los controles reales deben estar fuera del prompt.
+
+9. Que mide la tasa de finalizacion de tarea?
+   - Respuesta: si la aplicacion completa correctamente el objetivo del usuario.
+
+10. Que enfoque ayuda a comparar respuestas de modelos usando otro modelo como evaluador?
+   - Respuesta: LLM-as-a-judge, idealmente con calibracion y revision humana.
